@@ -13,7 +13,7 @@ hostname = xremit.xcurrency.com, explorer.tratao.com
 
 [URL Rewrite]
 # 使用response-body类型来修改响应体
-^https?:\/\/(xremit\.xcurrency|explorer.tratao)\.com\/api\/client\/xtool\/vip$ request-header method=GET,script-path=jijianhuilv_modify_response.js,response-body
+^https?:\/\/(xremit\.xcurrency|explorer.tratao)\.com\/api\/client\/xtool\/vip$ request-header method=GET,script-path=https://github.com/xuhuaq/rules/raw/refs/heads/main/jijianhuilv_modify_response.js,response-body
 
 [Script]
 # 这个部分定义了response-body修改所引用的JavaScript代码
@@ -35,4 +35,3 @@ hostname = xremit.xcurrency.com, explorer.tratao.com
 # 然后确保该文件与.sgmodule文件在同一个可访问的目录下，
 # 或者将该JS内容部署到可以通过URL访问的地方。
 
-script-path=https://github.com/xuhuaq/rules/raw/refs/heads/main/jijianhuilv_modify_response.js
