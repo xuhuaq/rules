@@ -1,36 +1,38 @@
-[Module]
-Name = 极简汇率 VIP
-Description = 解锁极简汇率 VIP 权限（内嵌脚本）
-Author = chxm1023（改写：ChatGPT）
-Version = 1.0
+#!name=极简汇率-高级版
+#!desc=极简汇率高级版解锁，支持汇率查询等功能。
+#!author=chxm1023 (Adapted by ChatGPT)
+#!resource=https://raw.githubusercontent.com/chxm1023/Rewrite/main/jijianhuilv.js
 
-[Script]
-http-response ^https?:\/\/(xremit\.xcurrency|explorer\.tratao)\.com\/api\/client\/xtool\/vip requires-body=true max-size=0 script-language=javascript script-delimiter=@@
-
-@@
-var chxm1023 = JSON.parse($response.body);
-
-chxm1023.data = [
-    {
-      "uuid" : "D53A4774-B52D-4B2C-A9EB-2ECAD9999999",
-      "id" : "dd9ce407ea984500a65957c2e0659999",
-      "vipPayUnit" : "year",
-      "benefits" : [
-
-      ],
-      "expire" : "2099-09-09 09:09:09",
-      "vipStatus" : "paid",
-      "update" : "2023-10-23 08:21:57",
-      "vipLevel" : "senior",
-      "userId" : "93fa3b800daa451646a5825c249c9999",
-      "vipPayNum" : 1,
-      "vipPayType" : "auto_sub",
-      "created" : "2023-10-23 08:21:52"
-    }
-];
-
-$done({body : JSON.stringify(chxm1023)});
-@@
+[Rule]
+# 如果你想基于域名路由，可以在这里添加域名规则
+# DOMAIN-SUFFIX,xcurrency.com,DIRECT
+# DOMAIN-SUFFIX,tratao.com,DIRECT
 
 [MITM]
 hostname = xremit.xcurrency.com, explorer.tratao.com
+
+[URL Rewrite]
+# 使用response-body类型来修改响应体
+^https?:\/\/(xremit\.xcurrency|explorer.tratao)\.com\/api\/client\/xtool\/vip$ request-header method=GET,script-path=jijianhuilv_modify_response.js,response-body
+
+[Script]
+# 这个部分定义了response-body修改所引用的JavaScript代码
+# 注意：Shadowrocket的response-body脚本可能无法直接访问$response.body，
+# 通常是通过特定的函数或参数来获取和设置。
+# 实际操作中，response-body脚本的实现方式可能与Surge/QX不同。
+# 这里提供一个可能的适配方案，但需要根据Shadowrocket的具体API验证。
+# 通常，response-body脚本会接收body作为参数，并返回修改后的body。
+
+# 定义用于修改响应体的JavaScript文件内容
+# 注意：在Shadowrocket中，response-body的script-path指向的是一个本地或远程JS文件。
+# 下面直接提供了文件内容，你需要将这部分保存为一个单独的JS文件，
+# 例如 jijianhuilv_modify_response.js，并确保Shadowrocket可以访问它。
+
+# 如果你是通过直接在模块中嵌入脚本，Shadowrocket通常要求脚本文件名在[Script]部分定义，
+# 并且脚本内容是Base64编码。但对于response-body，更常见的是引用外部JS文件。
+
+# 为简化，直接提供脚本内容，你需要将其保存为 jijianhuilv_modify_response.js
+# 然后确保该文件与.sgmodule文件在同一个可访问的目录下，
+# 或者将该JS内容部署到可以通过URL访问的地方。
+
+script-path=https://github.com/xuhuaq/rules/raw/refs/heads/main/jijianhuilv_modify_response.js
